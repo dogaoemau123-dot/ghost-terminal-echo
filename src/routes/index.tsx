@@ -1,26 +1,21 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useGame } from "@/game/store";
+import { BootScreen } from "@/components/BootScreen";
+import { GameScreen } from "@/components/GameScreen";
 
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "HACKER — RPG Cyberpunk de Invasões" },
+      { name: "description", content: "Jogo RPG narrativo cyberpunk: aceite contratos do misterioso Ghost, resolva puzzles de hacking e suba de nível. Cuidado com seu Heat Level." },
+      { property: "og:title", content: "HACKER — RPG Cyberpunk" },
+      { property: "og:description", content: "Você é um hacker freelancer. Até onde você vai pelo dinheiro?" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. For sites with multiple pages (About, Services, Contact, etc.),
-// create separate route files (about.tsx, services.tsx, contact.tsx) — don't put all pages in this file.
-function PlaceholderIndex() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
-
 function Index() {
-  return <PlaceholderIndex />;
+  const started = useGame(s => s.started);
+  return started ? <GameScreen /> : <BootScreen />;
 }
